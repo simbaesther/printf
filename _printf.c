@@ -1,8 +1,26 @@
-#include "main.h"
+#iclude "main.h"
 
-void cleanup(va_list args, buffer_t *output);
-int run_printf(const char *format, va_list args, buffer_t *output);
-int _printf(const char *format, ...);
+/**
+ * count_one_bits - Counts the number of bits set
+ *                  to one in a binary number.
+ * @num: The binary number.
+ *
+ * Return: The number of bits set to one.
+ */
+unsigned char count_one_bits(unsigned char num)
+{
+	unsigned char count = 0;
+
+	while (num != 0)
+	{
+		if ((num & 1) == 1)
+			count++;
+		num >>= 1;
+	}
+
+	return (count);
+}
+
 
 /**
  * cleanup - Peforms cleanup operations for _printf.
@@ -16,6 +34,7 @@ void cleanup(va_list args, buffer_t *output)
 	free_buffer(output);
 }
 
+
 /**
  * run_printf - Reads through the format string for _printf.
  * @format: Character string to print - may contain directives.
@@ -26,29 +45,28 @@ void cleanup(va_list args, buffer_t *output)
  */
 int run_printf(const char *format, va_list args, buffer_t *output)
 {
-	int i, wid, prec, ret = 0;
-	char tmp;
-	unsigned char flags, len;
-	unsigned int(*f)(va_list, buffer_t *,
-			unsigned char, int, int, unsigned char);
+	int i, ret = 0;
+	char wid, prec, tmp;
+	unsigned char flag, len;
+	unsigned int (*f)(va_list, buffer_t *,\
+			unsigned char, char, char, unsigned char);
 
 	for (i = 0; *(format + i); i++)
 	{
 		len = 0;
 		if (*(format + i) == '%')
 		{
-			tmp = 0;
-			flags = handle_flags(format + i + 1, &tmp);
+			flag = handle_flags(format + i + 1);
+			tmp = count_one_bits(flag);
 			wid = handle_width(args, format + i + tmp + 1, &tmp);
-			prec = handle_precision(args, format + i + tmp + 1,
-					&tmp);
-			len = handle_length(format + i + tmp + 1, &tmp);
-
+			prec = handle_precision(args, format + i + tmp + 1, &tmp);
+			len = handle_length(format + i + tmp + 1);
+			tmp += (len != 0) ? 1 : 0;
 			f = handle_specifiers(format + i + tmp + 1);
 			if (f != NULL)
 			{
 				i += tmp + 1;
-				ret += f(args, output, flags, wid, prec, len);
+				ret += f(args, output, flag, wid, prec, len);
 				continue;
 			}
 			else if (*(format + i + tmp + 1) == '\0')
