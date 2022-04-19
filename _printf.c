@@ -22,7 +22,6 @@ int _printf(const char *format, ...)
 		{"u", unsigned_integer},
 		{"o", print_octal},
 		{"x", print_hex},
-		{"//X", print_heX},
 		{"X", print_heX},
 		{NULL, NULL}
 	};
