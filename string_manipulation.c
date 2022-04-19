@@ -88,3 +88,14 @@ int print_bigS(va_list l, mods *f)
 	}
 	return (len);
 }
+
+/**
+ * isNonAlphaNumeric - determines if char is a non-
+ * alphanumeric char on ASCII table
+ * @c: input char
+ * Return: true or false
+ */
+_Bool isNonAlphaNumeric(char c)
+{
+	return ((c > 0 && c < 32) || c >= 127);
+}
