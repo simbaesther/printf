@@ -41,8 +41,5 @@ char *rev_string(char *);
 void write_base(char *str);
 char *_memcpy(char *dest, char *src, unsigned int n);
 int print_unsgined_number(unsigned int);
-unsigned int print_pointer(va_list args, buffer_t *output,
-                unsigned char flags, char wid, char prec, unsigned char len)
-
 
 #endif
